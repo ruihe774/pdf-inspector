@@ -27,11 +27,6 @@ wasm-bindgen-test = "0.3"
 [profile.release]
 codegen-units = 1
 lto = true
-opt-level = "s"
-strip = true
-
-[package.metadata.wasm-pack.profile.release]
-# Rust 1.95 emits bulk-memory instructions that the binaryen bundled with
-# wasm-pack 0.15.0 does not yet validate. rustc still performs the release,
-# size, and LTO optimizations above.
-wasm-opt = false
+opt-level = 2
+# No `strip = true`: it drops the `target_features` section, which wasm-opt reads to learn
+# that the module uses bulk-memory instructions, and then it rejects the module.
